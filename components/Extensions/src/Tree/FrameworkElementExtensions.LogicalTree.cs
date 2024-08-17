@@ -150,6 +150,24 @@ public static partial class FrameworkElementExtensions
         }
         else if (element is ContentControl contentControl)
         {
+            if (element is Expander expander)
+            {
+                if (expander.Header is FrameworkElement header)
+                {
+                    if (header is T result && predicate.Match(result))
+                    {
+                        return result;
+                    }
+
+                    T? descendant = CustomFindChild<T, TPredicate>(header, ref predicate);
+
+                    if (descendant is not null)
+                    {
+                        return descendant;
+                    }
+                }
+            }
+
             if (contentControl.Content is FrameworkElement content)
             {
                 if (content is T result && predicate.Match(result))
