@@ -150,6 +150,24 @@ public static partial class FrameworkElementExtensions
         }
         else if (element is ContentControl contentControl)
         {
+            if (element is Expander expander)
+            {
+                if (expander.Header is FrameworkElement header)
+                {
+                    if (header is T result && predicate.Match(result))
+                    {
+                        return result;
+                    }
+
+                    T? descendant = FindChild<T, TPredicate>(header, ref predicate);
+
+                    if (descendant is not null)
+                    {
+                        return descendant;
+                    }
+                }
+            }
+
             if (contentControl.Content is FrameworkElement content)
             {
                 if (content is T result && predicate.Match(result))
@@ -378,6 +396,19 @@ public static partial class FrameworkElementExtensions
         }
         else if (element is ContentControl contentControl)
         {
+            if (element is Expander expander)
+            {
+                if (expander.Header is FrameworkElement header)
+                {
+                    yield return header;
+
+                    foreach (FrameworkElement childOfChild in FindChildren(header))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+
             if (contentControl.Content is FrameworkElement content)
             {
                 yield return content;
