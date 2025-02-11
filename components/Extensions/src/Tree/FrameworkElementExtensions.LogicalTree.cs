@@ -150,6 +150,7 @@ public static partial class FrameworkElementExtensions
         }
         else if (element is ContentControl contentControl)
         {
+            // Test change
             if (element is Expander expander)
             {
                 if (expander.Header is FrameworkElement header)
